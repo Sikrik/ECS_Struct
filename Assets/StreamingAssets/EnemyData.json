@@ -1,0 +1,16 @@
+﻿{
+  "Enemies": [
+    {
+      "EnemyID": 101,
+      "MaxHealth": 50.0,
+      "MoveSpeed": 3.5,
+      "AttackPower": 10.0
+    },
+    {
+      "EnemyID": 102,
+      "MaxHealth": 200.0,
+      "MoveSpeed": 1.5,
+      "AttackPower": 30.0
+    }
+  ]
+}
