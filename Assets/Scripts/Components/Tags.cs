@@ -30,4 +30,9 @@ namespace Components
     /// 战斗管理器标签：标识当前正在运行的战斗单例实体
     /// </summary>
     public struct BattleManagerTag : IComponentData { }
+    
+    /// <summary>
+    /// 待销毁标签：标记该实体在当前帧逻辑已结束，准备被统一移除
+    /// </summary>
+    public struct PendingDestroyTag : IComponentData { }
 }

@@ -74,20 +74,24 @@ namespace Systems
             // 检测鼠标左键点击，并确保已加载子弹预制体配置
             if (Input.GetMouseButtonDown(0) && SystemAPI.TryGetSingleton<BulletPrefabConfig>(out var config))
             {
-                // 通过 BeginSimulationEntityCommandBufferSystem 获取 ECB
-                // ECB 允许在当前帧末尾安全地执行实体操作，避免并行冲突
-                // World.Unmanaged 提供对底层 ECS 世界的非托管访问
                 var ecbSystem = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>();
                 var ecb = ecbSystem.CreateCommandBuffer(World.Unmanaged);
 
-                // 执行子弹实例化：从预制体创建新的子弹实体
+                // 1. 实例化子弹
                 Entity bullet = ecb.Instantiate(config.BulletPrefab);
-            
-                // 同步子弹的初始位置和旋转，使其从玩家当前位置发射
-                // FromPositionRotation 同时设置位置和旋转，比分别设置更高效
-                ecb.SetComponent(bullet, LocalTransform.FromPositionRotation(
-                    transform.ValueRO.Position,   // 只读位置
-                    transform.ValueRO.Rotation)); // 只读旋转
+
+                // 2. 关键点：直接获取预制体本身烘焙好的缩放值
+                // config.BulletPrefab 本身就是一个实体，它带有你在编辑器里设置的所有烘焙数据
+                var prefabTransform = SystemAPI.GetComponent<LocalTransform>(config.BulletPrefab);
+                float prefabScale = prefabTransform.Scale; 
+
+                // 3. 将位置、旋转应用到子弹，同时保留预制体的缩放
+                ecb.SetComponent(bullet, new LocalTransform
+                {
+                    Position = transform.ValueRO.Position,
+                    Rotation = transform.ValueRO.Rotation,
+                    Scale = prefabScale // 动态读取，不再硬编码 0.2f
+                });
             
                 // 设置子弹的初速度和移动参数
                 // math.forward 根据旋转四元数计算正前方单位向量

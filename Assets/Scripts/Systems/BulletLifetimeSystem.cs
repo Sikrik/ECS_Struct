@@ -76,7 +76,11 @@ namespace Systems
             {
                 // 子弹寿命到期，通过 ECB 安全销毁实体
                 // 使用 chunkIndex 确保并行写入的安全性
-                Ecb.DestroyEntity(chunkIndex, entity);
+                // 满足销毁条件时，不再 Destroy，而是打标签
+                if (bullet.CurrentLifeTime >= bullet.MaxLifeTime)
+                {
+                    Ecb.AddComponent<PendingDestroyTag>(chunkIndex, entity);
+                }
             }
         }
     }

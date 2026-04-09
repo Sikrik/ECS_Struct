@@ -51,16 +51,16 @@ namespace Authoring
                     MaxHealth = authoring.MaxHealth
                 });
 
-                // 根据角色身份分配标签和特有组件
+                // 修改身份分配逻辑
                 if (authoring.IsPlayer)
                 {
-                    // 玩家角色：添加玩家标签和输入组件
                     AddComponent<PlayerTag>(entity);
                     AddComponent(entity, new PlayerInputComponent { Movement = float2.zero });
                 }
-                else
+                // 这里不要直接用 else，而是可以根据物体名、层级或其他标记判断
+                // 方案 A：如果该物体名字包含 "Enemy"，才加 EnemyTag
+                else if (authoring.gameObject.name.Contains("Enemy"))
                 {
-                    // 敌人角色：仅添加敌人标签
                     AddComponent<EnemyTag>(entity);
                 }
             }
