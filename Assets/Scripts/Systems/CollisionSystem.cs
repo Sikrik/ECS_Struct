@@ -10,10 +10,6 @@ namespace Systems
     [BurstCompile]
     public partial struct CollisionSystem : ISystem
     {
-        public void OnCreate(ref SystemState state)
-        {
-            state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
-        }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
