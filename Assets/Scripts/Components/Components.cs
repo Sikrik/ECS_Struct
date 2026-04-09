@@ -39,4 +39,11 @@ namespace Components
         public float MaxLifeTime;      // 子弹可飞行的最大时长（秒）
         public float CurrentLifeTime;  // 已飞行的时长计数
     }
+    /// <summary>
+    /// 碰撞属性组件：定义实体的物理碰撞半径
+    /// </summary>
+    public struct CollisionComponent : IComponentData
+    {
+        public float Radius; // 碰撞半径
+    }
 }

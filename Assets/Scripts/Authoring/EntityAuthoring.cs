@@ -18,6 +18,9 @@ namespace Authoring
     
         [Header("角色身份")]
         public bool IsPlayer;
+        
+        [Header("碰撞属性")]
+        public float CollisionRadius = 0.5f;
 
         /// <summary>
         /// 烘焙器类：在编辑器中将 MonoBehaviour 转换为 ECS 实体和组件
